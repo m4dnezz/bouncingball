@@ -15,8 +15,11 @@ blue         = (17 , 200, 251)
 tastyellow   = (255, 230,   0)
 arrow_color  = (255, 255, 255)
 golden       = (255, 166,  32)
-golden       = (245, 170,  10)
+golden2       = (245, 170,  10)
 algeablue    = (7  , 197,  70)
 magenta      = (255,  13, 130)
 magenta2     = (214,   0, 100)
 bg = deepblue
+
+all_colors = [white, grey, black, blackcoral, deepblue, red, green, yellowish, orange, velvet, bluish_white,
+              blue, tastyellow, arrow_color, golden, golden2, algeablue, magenta, magenta2]

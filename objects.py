@@ -11,6 +11,7 @@ class Balls():
         
         self.name   = name
         self.color  = color
+        self.trail_color = color
         self.radius = radius
         self.thicc  = thicc
         self.posx   = posx

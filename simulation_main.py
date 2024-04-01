@@ -7,7 +7,7 @@ from math import acos, atan2, sin, cos, sqrt, pi
 from colors import *
 from objects import Balls
 from constants import *
-
+import random
 
 # Centers window
 x, y = 1360 - width, 40
@@ -67,7 +67,7 @@ while True:
 
     for ball in Balls.balls:
         if len(ball.track)> 2 and Balls.trail:
-            pygame.draw.aalines(screen, ball.color, False, ball.track, 2)
+            pygame.draw.aalines(screen, ball.trail_color, False, ball.track, 2)
     for ball in Balls.balls:
         ball.drawball(screen)
         if not pause:
@@ -85,6 +85,12 @@ while True:
                 # if trail is False:
                 #     for ball in Balls.balls:
                 #         ball.track.clear()
+            if event.key == pygame.K_c:
+                Balls.balls[0].trail_color = all_colors[random.randint(0,len(all_colors)-1)]
+            if event.key == pygame.K_PLUS:
+                Balls.balls[0].radius *= 1.1
+            if event.key == pygame.K_MINUS:
+                Balls.balls[0].radius /= 1.1
     
 
     pygame.display.update()
