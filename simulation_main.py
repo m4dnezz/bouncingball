@@ -91,39 +91,3 @@ while True:
     pygame.display.update()
     clock.tick(fps)
     frames += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# vel = redball.vel
-# arrow(arrow_color, arrow_color, (redball.posx, redball.posy), (redball.posx+vel*10*cos(redball.theta), redball.posy-vel*10*sin(redball.theta)), 1)
-# rect = [redball.posx - 15 ,redball.posy-15, 30,30]
-# pygame.draw.line(screen, orange, (redball.posx, redball.posy), (redball.posx +25, redball.posy), 2 )
-# pygame.draw.rect(screen, yellow, rect, 4)
-# draw_cricle(red, 2, 0, redball.posx-15, redball.posy-15)
-# pygame.draw.arc(screen, white, rect, 0, redball.theta, 2)
-# arrow(arrow_color, arrow_color, (greenball.posx, greenball.posy), (greenball.posx+vel*10*cos(greenball.theta), greenball.posy-vel*10*sin(greenball.theta)), 1)
-    
-    
