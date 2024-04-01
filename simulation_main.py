@@ -1,18 +1,13 @@
 from pygame.gfxdraw import circle
-# from reflection import arrow, yellow
 from drawing import aacirlce
 import pygame
 import os
 import time as t
 from math import acos, atan2, sin, cos, sqrt, pi
-# import math
 from test import dot
 from colors import *
 from objects import Balls
 from constants import *
-
-# Game presets
-start_time = t.time()
 
 
 # Centers window
