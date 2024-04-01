@@ -1,7 +1,8 @@
 from constants import *
 import pygame
 from math import sqrt
-from test import dot
+from numpy import dot
+
 class Balls():
     trail = True
     balls = list()

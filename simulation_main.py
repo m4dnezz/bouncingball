@@ -4,7 +4,6 @@ import pygame
 import os
 import time as t
 from math import acos, atan2, sin, cos, sqrt, pi
-from test import dot
 from colors import *
 from objects import Balls
 from constants import *
