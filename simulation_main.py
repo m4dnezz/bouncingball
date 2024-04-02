@@ -24,13 +24,22 @@ background = pygame.image.load("img/start_img.png")
 # initialize pygame mixer and load audio file
 pygame.mixer.init()
 # pygame.mixer.music.load('audio/golf_ball.wav')  # audio options [golfball, ground_impact, metalmicrowave, golf_ball]
-
 # font = pygame.font.Font('freesansbold.ttf', 15)
 
+number_of_balls = 1
+for i in range(1,number_of_balls+1):
+    random_color = main_colors[random.randint(0,len(main_colors)-1)]
+    random_radius = random.randint(5,20)
+    random_x_offset = random.randint(10,50)
+    random_y_offset = random.randint(10,50)
+    Balls(str(random_color), random_color,random_radius,0,400+random_x_offset, 150+random_y_offset, "golf_ball.wav")
+    Balls.balls[-1].vely = random.randint(1,5) * random.choice((-1, 1))
+    Balls.balls[-1].velx = random.randint(1,2) * random.choice((-1, 1))
+
 # redball   = Balls("red ball", red, 8, 0, width//2-bigr+20, height//2-59, "bm.wav")
-redball   = Balls("red ball", golden, 8, 0, width//2-bigr+10, height//2, "golf_ball.wav")
-redball.vely = -5
-# greenball = Balls("green ball", algeablue, 8, 0, width//2+bigr-20, height//2-50, "golf_ball.wav")
+#redball   = Balls("red ball", golden, 8, 0, width//2-bigr+10, height//2, "golf_ball.wav")
+#redball.vely = -5
+#greenball = Balls("green ball", algeablue, 8, 0, width//2+bigr-20, height//2-50, "golf_ball.wav")
 # yellowball = Balls("green ball", magenta2, 8, 0, width//3, height//2,"trm.wav")
 # blueball = Balls("green ball", blue, 8, 0, width*2//3+5, height//2, "trm.wav")
 # greenball = Balls("green ball", green, 12, 0, width//2+70, height//2-60)
@@ -51,16 +60,11 @@ while start_sim is False:
                 start_sim = True
     
 
-
     pygame.display.update()
     clock.tick(fps)
 
 
 while True:
-
-    # draw_cricle(yellow, 2, 0, width//2, height//2)
-    # draw(red, height//3, 3, width//2, height//2)
-    
 
     screen.fill(bg)
     aacirlce(bigr, width//2, height//2, whitest, 1)
@@ -91,8 +95,29 @@ while True:
                 Balls.balls[0].radius *= 1.1
             if event.key == pygame.K_MINUS:
                 Balls.balls[0].radius /= 1.1
+            if event.key == pygame.K_UP:
+                Balls.balls[0].vely *= 1.1
+            if event.key == pygame.K_DOWN:
+                Balls.balls[0].vely /= 1.1
+            if event.key == pygame.K_b:
+                Balls.add_ball()
+            if event.key == pygame.K_ESCAPE:
+                quit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print(pygame.mouse.get_pos())
+            Balls.balls[0].posx, Balls.balls[0].posy = pygame.mouse.get_pos()
+            Balls.balls[0].velx, Balls.balls[0].vely = 0.0001, 0.0001 # Avoid division with 0
+            Balls.balls[0].track = list()
+
     
 
     pygame.display.update()
     clock.tick(fps)
     frames += 1
+
+
+#TODO: Everything only works with one ball, no collisions between balls
+#TODO: Mute button
+#TODO: Remove balls from sim
+#TODO: 

@@ -23,3 +23,5 @@ bg = deepblue
 
 all_colors = [white, grey, black, blackcoral, deepblue, red, green, yellowish, orange, velvet, bluish_white,
               blue, tastyellow, arrow_color, golden, golden2, algeablue, magenta, magenta2]
+
+main_colors = [red, green, blue, yellowish, golden, magenta]
