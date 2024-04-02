@@ -8,6 +8,8 @@ from colors import *
 from objects import Balls
 from constants import *
 import random
+import traceback
+import numpy as np
 
 # Centers window
 x, y = 1360 - width, 40
@@ -65,59 +67,64 @@ while start_sim is False:
 
 
 while True:
+    try:
+        screen.fill(bg)
+        aacirlce(bigr, width//2, height//2, whitest, 1)
 
-    screen.fill(bg)
-    aacirlce(bigr, width//2, height//2, whitest, 1)
-
-    for ball in Balls.balls:
-        if len(ball.track)> 2 and Balls.trail:
-            pygame.draw.aalines(screen, ball.trail_color, False, ball.track, 2)
-    for ball in Balls.balls:
-        ball.drawball(screen)
-        if not pause:
-            ball.collision_handling()
-            ball.motion()
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            quit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                pause = not pause
-            if event.key == pygame.K_t:
-                Balls.trail = not Balls.trail
-                # if trail is False:
-                #     for ball in Balls.balls:
-                #         ball.track.clear()
-            if event.key == pygame.K_c:
-                Balls.balls[0].trail_color = all_colors[random.randint(0,len(all_colors)-1)]
-            if event.key == pygame.K_PLUS:
-                Balls.balls[0].radius *= 1.1
-            if event.key == pygame.K_MINUS:
-                Balls.balls[0].radius /= 1.1
-            if event.key == pygame.K_UP:
-                Balls.balls[0].vely *= 1.1
-            if event.key == pygame.K_DOWN:
-                Balls.balls[0].vely /= 1.1
-            if event.key == pygame.K_b:
-                Balls.add_ball()
-            if event.key == pygame.K_ESCAPE:
+        for ball in Balls.balls:
+            if len(ball.track)> 2 and Balls.trail:
+                pygame.draw.aalines(screen, ball.trail_color, False, ball.track, 2)
+        for ball in Balls.balls:
+            ball.drawball(screen)
+            if not pause:
+                ball.collision_handling()
+                ball.motion()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pause = not pause
+                if event.key == pygame.K_t:
+                    Balls.trail = not Balls.trail
+                    # if trail is False:
+                    #     for ball in Balls.balls:
+                    #         ball.track.clear()
+                if event.key == pygame.K_c:
+                    Balls.balls[0].trail_color = all_colors[random.randint(0,len(all_colors)-1)]
+                if event.key == pygame.K_PLUS:
+                    Balls.balls[0].radius *= 1.1
+                if event.key == pygame.K_MINUS:
+                    Balls.balls[0].radius /= 1.1
+                if event.key == pygame.K_UP:
+                    Balls.balls[0].vely *= 1.1
+                if event.key == pygame.K_DOWN:
+                    Balls.balls[0].vely /= 1.1
+                if event.key == pygame.K_b:
+                    Balls.add_ball()
+                if event.key == pygame.K_ESCAPE:
+                    quit()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            print(pygame.mouse.get_pos())
-            Balls.balls[0].posx, Balls.balls[0].posy = pygame.mouse.get_pos()
-            Balls.balls[0].velx, Balls.balls[0].vely = 0.0001, 0.0001 # Avoid division with 0
-            Balls.balls[0].track = list()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(pygame.mouse.get_pos())
+                if np.linalg.norm(np.subtract(pygame.mouse.get_pos(),(width//2,height//2))) + Balls.balls[0].radius + 5 < bigr:
+                    Balls.balls[0].posx, Balls.balls[0].posy = pygame.mouse.get_pos()
+                    Balls.balls[0].velx, Balls.balls[0].vely = 0.0001, 0.0001 # Avoid division with 0
+                    Balls.balls[0].track = list()
+                else:
+                    print("Cannot move ball outside limits")
 
-    
+        
 
-    pygame.display.update()
-    clock.tick(fps)
-    frames += 1
-
+        pygame.display.update()
+        clock.tick(fps)
+        frames += 1
+    except Exception as e:
+        with open("error_log.txt","w") as f:
+            traceback.print_exc(file=f)
+            pygame.quit()
 
 #TODO: Everything only works with one ball, no collisions between balls
 #TODO: Mute button
 #TODO: Remove balls from sim
-#TODO: 
