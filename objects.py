@@ -20,6 +20,7 @@ class Balls():
         self.posx = posx
         self.posy = posy
         self.sound = f"audio/{sound}"
+        self.muted = False
         self.velx = 0
         self.vely = 0
         self.acc = g / fps
@@ -40,8 +41,8 @@ class Balls():
 
         if center_to_ball >= (bigr - self.radius):
             # play bounce sound effect
-
-            pygame.mixer.Sound.play(pygame.mixer.Sound(self.sound))
+            if not self.muted:
+                pygame.mixer.Sound.play(pygame.mixer.Sound(self.sound))
 
             while sqrt((x - self.posx)**2 + (y - self.posy)**2) > (bigr - self.radius):
                 step = 0.2

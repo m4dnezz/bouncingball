@@ -44,7 +44,7 @@ for i in range(1, number_of_balls + 1):
 
 pause = False
 start_sim = False
-
+muted = False
 
 while start_sim is False:
     screen.fill(bg)
@@ -85,7 +85,8 @@ while True:
             if event.key == pygame.K_c:
                 Balls.balls[0].trail_color = all_colors[random.randint(0, len(all_colors) - 1)]
             if event.key == pygame.K_PLUS:
-                Balls.balls[0].radius *= 1.1
+                if np.linalg.norm(np.subtract((Balls.balls[0].posx, Balls.balls[0].posy), (width // 2, height // 2))) + Balls.balls[0].radius * 1.1 + 5 < bigr:
+                    Balls.balls[0].radius *= 1.1
             if event.key == pygame.K_MINUS:
                 Balls.balls[0].radius /= 1.1
             if event.key == pygame.K_UP:
@@ -94,6 +95,15 @@ while True:
                 Balls.balls[0].vely /= 1.1
             if event.key == pygame.K_b:
                 Balls.add_ball()
+            if event.key == pygame.K_m:
+                if not muted:
+                    for b in Balls.balls:
+                        b.muted = True
+                    muted = True
+                elif muted:
+                    for b in Balls.balls:
+                        b.muted = False
+                    muted = False
             if event.key == pygame.K_ESCAPE:
                 quit()
 
