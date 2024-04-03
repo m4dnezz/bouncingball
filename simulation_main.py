@@ -124,3 +124,6 @@ while True:
 # TODO: Everything only works with one ball, no collisions between balls
 # TODO: Mute button
 # TODO: Remove balls from sim
+# TODO: Spawned balls not muted
+# TODO: Display number of balls
+# TODO: Shorten trail depending on balls? Laggy with many balls
