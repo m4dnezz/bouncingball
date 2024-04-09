@@ -94,7 +94,7 @@ while True:
             if event.key == pygame.K_DOWN:
                 Balls.balls[0].vely /= 1.1
             if event.key == pygame.K_b:
-                Balls.add_ball()
+                Balls.add_ball(muted)
             if event.key == pygame.K_m:
                 if not muted:
                     for b in Balls.balls:

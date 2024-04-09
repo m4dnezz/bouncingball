@@ -10,7 +10,7 @@ class Balls():
     trail = True
     balls = list()
 
-    def __init__(self, name, color, radius, thicc, posx, posy, sound="metalmicrowave.wav"):
+    def __init__(self, name, color, radius, thicc, posx, posy, sound="metalmicrowave.wav", muted=False):
         Balls.balls.append(self)
         self.name = name
         self.color = color
@@ -20,7 +20,7 @@ class Balls():
         self.posx = posx
         self.posy = posy
         self.sound = f"audio/{sound}"
-        self.muted = False
+        self.muted = muted
         self.velx = 0
         self.vely = 0
         self.acc = g / fps
@@ -86,11 +86,11 @@ class Balls():
         elif len(self.track) > fps * period / every :  # 240:
             self.track.pop(0)
 
-    def add_ball():
+    def add_ball(muted):
         random_color = main_colors[random.randint(0, len(main_colors) - 1)]
         random_radius = random.randint(5, 20)
         random_x_offset = random.randint(10, 50)
         random_y_offset = random.randint(10, 50)
-        Balls(str(random_color), random_color, random_radius, 0, 400 + random_x_offset, 150 + random_y_offset, "golf_ball.wav")
+        Balls(str(random_color), random_color, random_radius, 0, 400 + random_x_offset, 150 + random_y_offset, "golf_ball.wav", muted)
         Balls.balls[-1].vely = random.randint(1, 5) * random.choice((-1, 1))
         Balls.balls[-1].velx = random.randint(1, 2) * random.choice((-1, 1))
