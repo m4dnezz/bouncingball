@@ -24,7 +24,7 @@ pygame.mixer.init()
 # pygame.mixer.music.load('audio/golf_ball.wav')  # audio options [golfball, ground_impact, metalmicrowave, golf_ball]
 # font = pygame.font.Font('freesansbold.ttf', 15)
 
-number_of_balls = 100
+number_of_balls = 1
 for i in range(1, number_of_balls + 1):
     random_color = main_colors[random.randint(0, len(main_colors) - 1)]
     random_radius = random.randint(5, 20)
@@ -69,7 +69,8 @@ while True:
     for ball in Balls.balls:
         ball.drawball(screen)
         if not pause:
-            ball.collision_handling()
+            ball.wall_collision()
+            ball.ball_collision()
             ball.motion()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -109,12 +110,11 @@ while True:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(pygame.mouse.get_pos())
-            if np.linalg.norm(np.subtract(pygame.mouse.get_pos(), (width // 2, height // 2))) + Balls.balls[0].radius + 5 < bigr:
-                Balls.balls[0].posx, Balls.balls[0].posy = pygame.mouse.get_pos()
-                Balls.balls[0].velx, Balls.balls[0].vely = 0.0001, 0.0001  # Avoid division with 0
-                Balls.balls[0].track = list()
-            else:
-                print("Cannot move ball outside limits")
+            if event.button == 1:
+                if np.linalg.norm(np.subtract(pygame.mouse.get_pos(), (width // 2, height // 2))) + Balls.balls[0].radius + 5 < bigr:
+                    Balls.balls[0].posx, Balls.balls[0].posy = pygame.mouse.get_pos()
+                    Balls.balls[0].velx, Balls.balls[0].vely = 0.0001, 0.0001  # Avoid division with 0
+                    Balls.balls[0].track = list()
 
     pygame.display.update()
     clock.tick(fps)

@@ -1,9 +1,9 @@
 from constants import *
-import pygame
-from math import sqrt
-from numpy import dot
-import random
 from colors import *
+from numpy import dot
+import pygame
+import random
+import math
 
 
 class Balls():
@@ -29,22 +29,22 @@ class Balls():
     def drawball(self, screen):
         pygame.draw.circle(screen, self.color, (self.posx, self.posy), self.radius, self.thicc)
 
-    def collision_handling(self):
-        vel = sqrt(self.velx**2 + self.vely**2)
+    def wall_collision(self):
+        vel = math.sqrt(self.velx**2 + self.vely**2)
         # vel = 2 if vel >= 2 else vel
 
         x, y = centx, centy  # center of cirlce
         ballx, bally = self.posx, self.posy
         velx, vely = self.velx, self.vely
         # center to ball is the distance between ball's center and the ring's center
-        center_to_ball = sqrt((x - ballx)**2 + (y - bally)**2)
+        center_to_ball = math.sqrt((x - ballx)**2 + (y - bally)**2)
 
         if center_to_ball >= (bigr - self.radius):
             # play bounce sound effect
             if not self.muted:
                 pygame.mixer.Sound.play(pygame.mixer.Sound(self.sound))
 
-            while sqrt((x - self.posx)**2 + (y - self.posy)**2) > (bigr - self.radius):
+            while math.sqrt((x - self.posx)**2 + (y - self.posy)**2) > (bigr - self.radius):
                 step = 0.2
                 # moving the ball backwawrds in dir of velocity by small steps
                 self.posx += -self.velx * step / vel
@@ -63,20 +63,56 @@ class Balls():
             self.velx = reflected[0]
             self.vely = -reflected[1]
 
-            # a shitty fix to speed's gradual loss
+    def ball_collision(self):
+        for ball in self.balls:  # Check ball against all other balls
+            if ball != self:  # Unecesarry to check against self
+                dx = self.posx - ball.posx
+                dy = self.posy - ball.posy
+                distance = math.sqrt(dx ** 2 + dy ** 2)  # Calculate distance
 
-            # r_size = sqrt(self.velx**2 + self.vely**2)
-            # self.velx = reflected[0]*vel/r_size
-            # self.vely = -reflected[1]*vel/r_size
+                if distance < self.radius + ball.radius:
+                    # Collision detected
+                    # Calculate the angle of collision
+                    angle = math.atan2(dy, dx)
+                    # Calculate the velocities along the collision axis
+                    v1x = self.velx * math.cos(angle) + self.vely * math.sin(angle)
+                    v1y = self.vely * math.cos(angle) - self.velx * math.sin(angle)
+                    v2x = ball.velx * math.cos(angle) + ball.vely * math.sin(angle)
+                    v2y = ball.vely * math.cos(angle) - ball.velx * math.sin(angle)
+                    # Calculate the final velocities after collision using conservation of momentum
+                    m1 = self.radius
+                    m2 = ball.radius
+                    u1x = ((m1 - m2) * v1x + 2 * m2 * v2x) / (m1 + m2)
+                    u2x = ((m2 - m1) * v2x + 2 * m1 * v1x) / (m1 + m2)
+                    # Convert velocities back to x and y components
+                    self.velx = u1x * math.cos(angle) - v1y * math.sin(angle)
+                    self.vely = u1x * math.sin(angle) + v1y * math.cos(angle)
+                    ball.velx = u2x * math.cos(angle) - v2y * math.sin(angle)
+                    ball.vely = u2x * math.sin(angle) + v2y * math.cos(angle)
+
+                while distance < self.radius + ball.radius:  # After we change direction we must allow some movement
+                    dx = self.posx - ball.posx
+                    dy = self.posx - ball.posy
+                    distance = math.sqrt(dx ** 2 + dy ** 2)
+                    self.wall_collision()
+                    self.motion()
 
     def motion(self):
+        # Update velocity, velocities over threshold becomes unstable
+        if self.velx < velxmax:
+            self.velx += 0
+        else:
+            self.velx = velxmax
 
-        self.velx += 0
-        self.vely += self.acc
-
+        if self.vely < velymax:
+            self.vely += self.acc
+        else:
+            self.vely = velymax
+        # Update Positions
         self.posx += self.velx
         self.posy -= self.vely
 
+        # Update the trails
         every = 2
         period = 5
         if frames % every == 0 and Balls.trail:
