@@ -83,8 +83,9 @@ class Balls():
             self.track.append((self.posx, self.posy))
         if Balls.trail is False:
             self.track.clear()
-        elif len(self.track) > fps * period / every :  # 240:
-            self.track.pop(0)
+        elif len(self.track) > fps * period / every / (len(self.balls) * 0.01) :  # 240:
+            while len(self.track) > fps * period / every / (len(self.balls) * 0.01) :
+                self.track.pop(0)
 
     def add_ball(muted):
         random_color = main_colors[random.randint(0, len(main_colors) - 1)]

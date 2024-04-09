@@ -24,7 +24,7 @@ pygame.mixer.init()
 # pygame.mixer.music.load('audio/golf_ball.wav')  # audio options [golfball, ground_impact, metalmicrowave, golf_ball]
 # font = pygame.font.Font('freesansbold.ttf', 15)
 
-number_of_balls = 1
+number_of_balls = 100
 for i in range(1, number_of_balls + 1):
     random_color = main_colors[random.randint(0, len(main_colors) - 1)]
     random_radius = random.randint(5, 20)
