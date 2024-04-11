@@ -49,6 +49,7 @@ class Balls():
                 # moving the ball backwawrds in dir of velocity by small steps
                 self.posx += -self.velx * step / vel
                 self.posy -= -self.vely * step / vel
+                print("HELP!")
 
             normal = ballx - x, bally - y
             normal_mag = center_to_ball  # sqrt(normal[0]**2 + normal[1]**2)
@@ -90,24 +91,17 @@ class Balls():
                     ball.velx = u2x * math.cos(angle) - v2y * math.sin(angle)
                     ball.vely = u2x * math.sin(angle) + v2y * math.cos(angle)
 
-                while distance < self.radius + ball.radius:  # After we change direction we must allow some movement
-                    dx = self.posx - ball.posx
-                    dy = self.posx - ball.posy
-                    distance = math.sqrt(dx ** 2 + dy ** 2)
-                    self.wall_collision()
-                    self.motion()
-
     def motion(self):
         # Update velocity, velocities over threshold becomes unstable
         if self.velx < velxmax:
             self.velx += 0
         else:
-            self.velx = velxmax
+            self.velx = self.velx * 0.9
 
         if self.vely < velymax:
             self.vely += self.acc
         else:
-            self.vely = velymax
+            self.vely = self.vely * 0.9
         # Update Positions
         self.posx += self.velx
         self.posy -= self.vely
@@ -119,14 +113,14 @@ class Balls():
             self.track.append((self.posx, self.posy))
         if Balls.trail is False:
             self.track.clear()
-        elif len(self.track) > fps * period / every / (len(self.balls) * 0.01) :  # 240:
-            while len(self.track) > fps * period / every / (len(self.balls) * 0.01) :
+        elif len(self.track) > fps * period / every / (len(self.balls) * 0.1) :  # 240:
+            while len(self.track) > fps * period / every / (len(self.balls) * 0.1) :
                 self.track.pop(0)
 
     def add_ball(muted):
         random_color = main_colors[random.randint(0, len(main_colors) - 1)]
-        random_radius = random.randint(5, 20)
-        random_x_offset = random.randint(10, 50)
+        random_radius = random.randint(5, 30)
+        random_x_offset = random.randint(10, 60)
         random_y_offset = random.randint(10, 50)
         Balls(str(random_color), random_color, random_radius, 0, 400 + random_x_offset, 150 + random_y_offset, "golf_ball.wav", muted)
         Balls.balls[-1].vely = random.randint(1, 5) * random.choice((-1, 1))

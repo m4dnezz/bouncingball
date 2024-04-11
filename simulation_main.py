@@ -31,7 +31,7 @@ for i in range(1, number_of_balls + 1):
     random_x_offset = random.randint(10, 50)
     random_y_offset = random.randint(10, 50)
     Balls(str(random_color), random_color, random_radius, 0, 400 + random_x_offset, 150 + random_y_offset, "golf_ball.wav")
-    Balls.balls[-1].vely = random.randint(1, 5) * random.choice((-1, 1))
+    Balls.balls[-1].vely = random.randint(1, 2) * random.choice((-1, 1))
     Balls.balls[-1].velx = random.randint(1, 2) * random.choice((-1, 1))
 
 # redball   = Balls("red ball", red, 8, 0, width//2-bigr+20, height//2-59, "bm.wav")
@@ -70,6 +70,7 @@ while True:
         ball.drawball(screen)
         if not pause:
             ball.wall_collision()
+            ball.motion()
             ball.ball_collision()
             ball.motion()
     for event in pygame.event.get():
